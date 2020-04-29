@@ -1,16 +1,22 @@
+
+from matplotlib import pyplot as plt
+
 import csv
 import datetime
 
 
-BORNE_SUP = 1000
-GROUP = 100
+BORNE_SUP = 10000
+GROUP = 200
 
 
 def main():
 	l = prime_numbers(BORNE_SUP)
-	print(l)
+	print('Primes:\n', l)
+	
 	map = group_by(l, GROUP)
-	res = digest(map)
+	nb_prime_by_group = digest(map)
+	plot_curve(nb_prime_by_group)
+	
 	# write_in_csv(res)
 
 
@@ -30,21 +36,21 @@ def prime_numbers(borne_sup):
 def group_by(list, group):
 	map_group = {}
 
-	i=1
-	sub_group = []
+	i=0
+	map_group[i] = []	
 	for x in list:
-		if x > i*group:
-			map_group[(i-1)*group] = sub_group
-			sub_group = []
-			while x > i*group:
+		if x >= (i+1)*group:
+			while x >= (i+1)*group:
 				i+=1
-
-		sub_group.append(x)
+			map_group[(i)*group] = []
+		
+		map_group[(i)*group].append(x)
 
 	return map_group
 
 
 def digest(map):
+	print('\nProcess the grouped primes.')
 	l = []
 	count = 0
 	for k, v in map.items():
@@ -55,6 +61,14 @@ def digest(map):
 
 	return l
 
+
+def plot_curve(list):
+	plt.plot(list)
+	
+	plt.title("count prime numbers")
+	plt.ylabel("count")
+	plt.xlabel("group")
+	plt.show()
 
 def write_in_csv(list):
 	f_name = 'output_' + get_date_timestamp() + '.csv'
