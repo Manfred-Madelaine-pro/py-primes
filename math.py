@@ -4,21 +4,18 @@ from matplotlib import pyplot as plt
 import csv
 import datetime
 
-
-BORNE_SUP = 10000
-GROUP = 200
+UPPER_BOUND = 100
+GROUP = 10
 
 
 def main():
-	l = prime_numbers(BORNE_SUP)
-	print('Primes:\n', l)
+	l = prime_numbers(UPPER_BOUND)
+	print('All prime numbers less than {}:\n'.format(UPPER_BOUND), l)
 	
 	map = group_by(l, GROUP)
-	nb_prime_by_group = digest(map)
-	plot_curve(nb_prime_by_group)
+	prime_groups = digest(map)
+	plot_curve(prime_groups)
 	
-	# write_in_csv(res)
-
 
 def prime_numbers(borne_sup):
 	prime_list = []
@@ -50,7 +47,7 @@ def group_by(list, group):
 
 
 def digest(map):
-	print('\nProcess the grouped primes.')
+	print('\nAll primes grouped by {}.'.format(GROUP))
 	l = []
 	count = 0
 	for k, v in map.items():
@@ -63,31 +60,13 @@ def digest(map):
 
 
 def plot_curve(list):
+	plt.figure('Prime Numbers')
 	plt.plot(list)
 	
 	plt.title("count prime numbers")
 	plt.ylabel("count")
 	plt.xlabel("group")
 	plt.show()
-
-def write_in_csv(list):
-	f_name = 'output_' + get_date_timestamp() + '.csv'
-	f = open(f_name, 'w')
-
-	with f:
-		writer = csv.writer(f)
-		writer.writerow(['group', 'count']) # column name
-		for _, v in enumerate(list):
-			writer.writerow([_, v])
-
-
-def get_date_timestamp():
-	dt = str(datetime.datetime.now()) # example : 2020-04-29 23:12:05.033586
-	dt = dt.replace(' ', '_')
-	dt = dt.replace(':', '')		# remove time token
-	dt = dt.split('.')[0] 			# remove nano second
-	return dt
-
 
 
 
