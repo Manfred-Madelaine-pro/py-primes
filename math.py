@@ -1,8 +1,6 @@
-
 from matplotlib import pyplot as plt
-
-import csv
-import datetime
+from prettytable import PrettyTable
+    
 
 UPPER_BOUND = 100
 GROUP = 10
@@ -13,7 +11,10 @@ def main():
 	print('All prime numbers less than {}:\n'.format(UPPER_BOUND), l)
 	
 	map = group_by(l, GROUP)
+
 	prime_groups = digest(map)
+
+	plot_consol(prime_groups)
 	plot_curve(prime_groups)
 	
 
@@ -47,13 +48,10 @@ def group_by(list, group):
 
 
 def digest(map):
-	print('\nAll primes grouped by {}.'.format(GROUP))
 	l = []
 	count = 0
 	for k, v in map.items():
 		count += len(v)
-
-		print('{} : {} (count = {})'.format(k, len(v), count))
 		l.append(len(v))
 
 	return l
@@ -69,6 +67,18 @@ def plot_curve(list):
 	plt.show()
 
 
+def plot_consol(list):
+	tab = PrettyTable()
+
+	tab.field_names = ["Group", "Count", "Total"]
+	total = 0
+	for i, elm in enumerate(list):
+		total += elm
+		tab.add_row([i*GROUP, elm, total])
+
+
+	print('\nAll primes grouped by {}:'.format(GROUP))
+	print(tab)
 
 # ----------------------------
 
