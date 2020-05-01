@@ -11,32 +11,11 @@ GROUP = 100
 
 
 def main():
-	# primes = pg.get_prime_numbers(UPPER_BOUND)
 	# sorter()
 	# units()
-	# units3()
-
-	perf_test()
+	units3()
 
 
-def perf_test():
-	batch = 100
-
-	data = {}
-	perfs = {'time': 0}
-
-	for i in range(3):
-		data[i] = perfs.copy()
-
-	# test 1: create and access many
-	for i in range(batch):
-		# start time
-		primes = pg.get_prime_numbers(UPPER_BOUND)
-		
-	
-	# test 2: create once and access many (file)
-
-	# test 3: create once and access many (Database)
 
 
 def sorter():

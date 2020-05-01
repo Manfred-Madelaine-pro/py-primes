@@ -1,3 +1,8 @@
+from pathlib import Path
+
+
+
+# ------------- Generatoe ---------------
 
 
 def get_prime_numbers(upper_bound):
@@ -12,13 +17,32 @@ def get_prime_numbers(upper_bound):
 	return prime_list
 
 
+
 # ------------- File ---------------
 
-def write():
-	f_name = 'output_' + get_date_timestamp()
 
-	write_in_file(list, f_name)
-	# write_in_csv(list, f_name)
+CSV = 'csv'
+FILE = 'file'
+DATABASE = 'database'
+
+OUTPUT_PATH = "output/"
+
+
+def load(file_name):
+	with open('listfile.txt', 'r') as filehandle:
+		places = [current_place.rstrip() for current_place in filehandle.readlines()]
+
+
+def save(list, type, name=None):
+	if(not name):
+		f_name = 'output_' + get_date_timestamp()
+
+	if type == FILE:
+		write_in_file(list, f_name)
+	elif type == DATABASE:
+		pass
+	elif type == CSV:
+		write_in_csv(list, f_name)
 
 	return f_name
 
@@ -31,16 +55,31 @@ def get_date_timestamp():
 	return dt
 
 
-def write_in_file(list, f_name):
-	f = open(f_name + ".txt", "w")
-	f.write("Woops! I have deleted the content!")
-	f.close()
+def write_in_file(list, file_name):
+	# make sure that the output directory exists 
+	Path(OUTPUT_PATH).mkdir(parents=True, exist_ok=True)
+
+	f_name = f"{OUTPUT_PATH}{file_name}.txt"
+	with open(f_name, 'w') as file:
+		file.writelines(f"{elm}\n" for elm in list)
 
 
-def write_in_csv(list, ):
-	f = open(f_name + '.csv', 'w')
-	with f:
+def write_in_csv(list, file_name):
+	with open(file_name + '.csv', 'w') as f:
 		writer = csv.writer(f)
 		writer.writerow(['group', 'count']) # column name
 		for _, v in enumerate(list):
 			writer.writerow([_, v])
+
+
+
+
+# ----------------------- Database ---------------------------
+
+
+
+# ----------------------- Test ---------------------------
+
+
+def test_write_in_file():
+	write_in_file([i for i in range(3)], 'test')
