@@ -9,14 +9,14 @@ pip3 install matplotlib
 pip3 install PTable
 ```
 
-Those libraries help to display table and curves as shown bellow.
+Those libraries help to display tables and curves as shown bellow.
 
 
 ## :rocket: Quick start 
 
 Run this command:
 ```bash
-python math.py
+python main.py
 ```
 
 ## :dart: Result
