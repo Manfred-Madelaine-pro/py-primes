@@ -1,6 +1,6 @@
-# Prime Numbers
+# :abacus: Prime Numbers
 
-## Installation
+## :memo: Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install **matplotlib** and **prettytable**.
 
@@ -12,16 +12,16 @@ pip3 install PTable
 Those libraries help to display table and curves as shown bellow.
 
 
-## Quick start 
+## :rocket: Quick start 
 
 Run this command:
 ```bash
 python math.py
 ```
 
-## Result
+## :dart: Result
 
-### Consol output
+### :desktop_computer: Consol output
 ```
 All prime numbers less than 100:
  [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
@@ -43,11 +43,11 @@ All primes grouped by 10:
 +-------+-------+-------+
 ```
 
-### Curve plot 
+### :chart: Curve plot 
 ![curve](img/curve.PNG)
 
 
-## Settings
+## :gear: Settings
 If you want to personalize the output, just change those global variables:
 
 ```python
