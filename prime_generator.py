@@ -29,22 +29,21 @@ OUTPUT_PATH = "output/"
 
 
 def load(file_name):
-	with open('listfile.txt', 'r') as filehandle:
-		places = [current_place.rstrip() for current_place in filehandle.readlines()]
+	lines = []
+	with open(file_name, 'r') as file:
+		lines = [int(current_place.rstrip()) for current_place in file.readlines()]
+
+	return lines
 
 
 def save(list, type, name=None):
 	if(not name):
-		f_name = 'output_' + get_date_timestamp()
+		name = 'output_' + get_date_timestamp()
 
 	if type == FILE:
-		write_in_file(list, f_name)
+		return write_in_file(list, name)
 	elif type == DATABASE:
 		pass
-	elif type == CSV:
-		write_in_csv(list, f_name)
-
-	return f_name
 
 
 def get_date_timestamp():
@@ -62,6 +61,8 @@ def write_in_file(list, file_name):
 	f_name = f"{OUTPUT_PATH}{file_name}.txt"
 	with open(f_name, 'w') as file:
 		file.writelines(f"{elm}\n" for elm in list)
+
+	return f_name
 
 
 def write_in_csv(list, file_name):
@@ -81,5 +82,9 @@ def write_in_csv(list, file_name):
 # ----------------------- Test ---------------------------
 
 
-def test_write_in_file():
-	write_in_file([i for i in range(3)], 'test')
+def test_write_and_read_file():
+	name = write_in_file([i for i in range(3)], 'test')
+	print(load(name))
+	print(name)
+
+# test_write_and_read_file()

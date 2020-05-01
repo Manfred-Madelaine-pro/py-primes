@@ -11,23 +11,22 @@ GROUP = 100
 
 
 def main():
-	# sorter()
-	# units()
-	units3()
+	# regrouper()
+	# digits()
+	digits3()
 
 
-
-
-def sorter():
+def regrouper():
 	primes = pg.get_prime_numbers(UPPER_BOUND)
 	labels, values = ps.sort_primes(primes, GROUP)
 
 	dp.plot_primes(primes, UPPER_BOUND)
 	dp.plot_consol(labels, values, GROUP)
+	# name ?
 	dp.plot_sorted_curve(labels, values)
 
 
-def units():
+def digits():
 	place = 1
 	primes = pg.get_prime_numbers(UPPER_BOUND)
 	labels, values = pd.get_digits(primes, place)
@@ -37,7 +36,7 @@ def units():
 	dp.plot_digit_curve(labels, values)
 
 
-def units3():
+def digits3():
 	place = 3
 	bound = [100, 500, 1000]
 	labels3, values3 = [], []
