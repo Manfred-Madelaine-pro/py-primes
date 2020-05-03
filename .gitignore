@@ -1,4 +1,6 @@
+# repositories
 venv/
+output/
 __pycache__/
 
 
