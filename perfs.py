@@ -81,7 +81,6 @@ def create_once_and_access_many(bound, group, index): # files
 	file_name = f'output/{NAME}.txt'
 	
 	if(index == 0):
-		# create
 		primes = pg.get_prime_numbers(bound)
 		file_name = pg.save(primes, 'file', name=NAME)
 
@@ -94,7 +93,6 @@ def create_once_and_access_many_db(bound, group, index): # db
 	prime_db = pg.access_db(db_name)
 	
 	if(index == 0):
-		# create
 		primes = pg.get_prime_numbers(bound)
 		pg.populate_db(prime_db, primes)
 
