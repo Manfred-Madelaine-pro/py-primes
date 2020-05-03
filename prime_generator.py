@@ -3,44 +3,40 @@ from pathlib import Path
 import database as db
 
 
+POTENTIAL_ITER = 'Potential'
+EFFECTIVE_ITER = 'Reality'
+TOTAL_ITER = 'Total'
+
 
 # ------------- Generator ---------------
 
-def get_prime_numbers_old(upper_bound):
-	iteration = 0
+def get_prime_numbers(upper_bound, version='v2', with_stats=False):
+	stats = {
+		POTENTIAL_ITER: [],
+		EFFECTIVE_ITER: [],
+		TOTAL_ITER: 0
+	}
+
 	prime_list = []
 	for n in range(2, upper_bound):
-		print(f'\n{n}:')
-		for x in range(2, n):
-			iteration += 1
-			
-			print(f'{x}, ', end = '', flush=True)
-			if n % x == 0:
-				break
-		else:
-			prime_list += [n]
-
-	print(f'\ntotal iteration: {iteration}.')
-	return prime_list
-
-
-def get_prime_numbers(upper_bound, version='v2'):
-	iteration = 0
-	prime_list = []
-	for n in range(2, upper_bound):
-		print(f'{n}:')
+		count = 0
 		searching_list = get_searching_list(version, prime_list, n)
-		print(searching_list)
+		
 		for x in searching_list:
-			iteration += 1
+			count += 1
 
 			if n % x == 0:
 				break
 		else:
 			prime_list += [n]
 
-	print(f'\ntotal iteration: {iteration}.')
-	return prime_list
+		stats[POTENTIAL_ITER] += [len(searching_list)] 
+		stats[EFFECTIVE_ITER] += [count]
+		stats[TOTAL_ITER] += count
+
+	if with_stats:
+		return prime_list, stats
+	return prime_list 
 
 
 def get_searching_list(version, prime_list, max):
@@ -48,10 +44,9 @@ def get_searching_list(version, prime_list, max):
 	
 	if not prime_list or version == 'v1':
 		return full_range 
-	else :
-		shorten_range = prime_list + [x for x in range (prime_list[-1]+1, max)]
-		print(f'Saved {len(full_range) - len(shorten_range)} potential iterations.')
-		return shorten_range
+
+	shorten_range = prime_list + [x for x in range (prime_list[-1]+1, max)]
+	return shorten_range
 
 
 # ------------- File ---------------

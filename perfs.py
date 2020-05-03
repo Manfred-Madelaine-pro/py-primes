@@ -17,31 +17,45 @@ SHORT = 'short'
 LONG = 'long'
 
 ALL_TESTS = {
-	# 0: {SHORT: 'Many to Many', LONG: 'Create and access many time'},
-	1: {SHORT: 'One to Many (file)', LONG: 'Create once, access many times from file'},
-	2: {SHORT: 'One to Many (DB)', LONG: 'Create once, access many times from database'},
+	0: {SHORT: 'One to Many (file)', LONG: 'Create once, access many times from file'},
+	1: {SHORT: 'One to Many (DB)', LONG: 'Create once, access many times from database'},
+	# 2: {SHORT: 'Many to Many', LONG: 'Create and access many time'},
 }
 
-BOUND = 20
+BOUND = 2000
 GROUP = BOUND/10
 
 BATCH    = 100
 REPEAT   = 5
 NUMBER   = 5
 
-REPEAT_C   = 1
-NUMBER_C   = 1
+REPEAT_C   = 5
+NUMBER_C   = 5
 
+
+GLOBAL_STATS = {}
 
 
 # ----------------------- Timer ---------------------------
 
 def creating_perfs():
-	tested_func = wrapper(create_primes, BOUND)
-	raw_stats = timeit.repeat(tested_func, repeat=REPEAT_C, number=NUMBER_C)
+	tests = [
+		'v1',
+		'v2'
+	]
 
-	data = digest(raw_stats)
-	print(f'\n{data}\n')
+	data = {}
+	for i in range(len(tests)):
+		tested_func = wrapper(create_primes, BOUND, tests[i])
+		raw_stats = timeit.repeat(tested_func, repeat=REPEAT_C, number=NUMBER_C)
+
+		data[i] = digest(raw_stats)
+		print(f'\n{data[i]}\n')
+
+	# compare best and worse times
+	compare_stats(data, tests)
+	# curve
+	# print(GLOBAL_STATS)
 
 
 def storing_perfs():
@@ -57,7 +71,8 @@ def storing_perfs():
 		print(f'\n{data[test_id]}\n')
 
 	# compare best and worse times
-	compare_stats(data)
+	tests_name = [test[SHORT] for _, test in ALL_TESTS.items()]
+	compare_stats(data, tests_name)
 	
 
 '''
@@ -72,10 +87,11 @@ def wrapper(func, *args, **kwargs):
 
 # ----------------------- Create ---------------------------
 
-def create_primes(bound):
+def create_primes(bound, test):
 	print('.', end = '', flush=True)
-	p = pg.get_prime_numbers(bound)
-	print(f'{p}')
+	p, stats = pg.get_prime_numbers(bound, test, with_stats=True)
+
+	GLOBAL_STATS[test] = stats
 
 
 # ----------------------- Store ---------------------------
@@ -107,6 +123,7 @@ def create_once_and_access_many(bound, group, index): # files
 	
 	if(index == 0):
 		primes = pg.get_prime_numbers(bound)
+		print(primes)
 		file_name = pg.save(primes, 'file', name=NAME)
 
 	primes = pg.load(file_name)
@@ -141,13 +158,11 @@ def digest(raw_stats):
 	return stats
 	
 
-def compare_stats(data):
+def compare_stats(data, tests_name):
 	stats = []
 	col = [NAME, BEST, AVERAGE, WORST]
-	indexes = list(ALL_TESTS.keys())
-	for i, stat in enumerate(data):
-		idx = indexes[i]
-		name = ALL_TESTS[idx][SHORT]
+	for idx, stat in enumerate(data):
+		name = tests_name[idx]
 		best = data[idx][BEST]
 		avg = data[idx][AVERAGE]
 		worst = data[idx][WORST]
@@ -157,6 +172,8 @@ def compare_stats(data):
 	dp.print_table(col, stats, "All Performance Tests")
 
 
+def plot_stats(data):
+	pass
 
 # ----------------------- Test ---------------------------
 
