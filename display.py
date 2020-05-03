@@ -65,5 +65,4 @@ def plot_3digit_curve(labels, values):
 		plt.subplot(131 + i)
 		plt.bar(labels[i], values[i])
 
-	# plt.figure('Prime Numbers')
 	plt.show()

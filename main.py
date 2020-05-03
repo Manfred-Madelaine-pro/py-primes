@@ -11,18 +11,17 @@ GROUP = 100
 
 
 def main():
-	# regrouper()
+	# regroup()
 	# digits()
 	digits3()
 
 
-def regrouper():
+def regroup():
 	primes = pg.get_prime_numbers(UPPER_BOUND)
 	labels, values = ps.sort_primes(primes, GROUP)
 
 	dp.plot_primes(primes, UPPER_BOUND)
 	dp.plot_consol(labels, values, GROUP)
-	# name ?
 	dp.plot_sorted_curve(labels, values)
 
 
