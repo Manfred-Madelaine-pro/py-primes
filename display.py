@@ -10,15 +10,26 @@ def plot_primes(primes, bound):
 
 
 def plot_consol(group_label, groups_len, group):
-	tab = PrettyTable()
-	tab.field_names = ["Group", "Count", "Total"]
+	title = f'\nAll primes grouped by {group}:'
+	columns_names = ["Group", "Count", "Total"]
 
+	rows = []
 	total = 0
 	for label, group_len in zip(group_label, groups_len):
 		total += group_len
-		tab.add_row([label, group_len, total])
+		rows += [label, group_len, total]
 
-	print('\nAll primes grouped by {}:'.format(group))
+	print_table(columns_names, rows, title)
+
+
+def print_table(columns_names, rows, title):
+	tab = PrettyTable()
+	tab.field_names = columns_names
+
+	for row in rows:
+		tab.add_row(row)
+
+	print(title)
 	print(tab)
 
 
