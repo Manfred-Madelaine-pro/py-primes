@@ -1,7 +1,7 @@
 import timeit
 from statistics import mean
 
-
+import display as dp
 import prime_sorter as ps
 import prime_generator as pg
 
@@ -17,22 +17,22 @@ SHORT = 'short'
 LONG = 'long'
 
 ALL_TESTS = {
-	0: {SHORT: 'Many to Many', LONG: 'Create and access many time'},
+	# 0: {SHORT: 'Many to Many', LONG: 'Create and access many time'},
 	1: {SHORT: 'One to Many (file)', LONG: 'Create once, access many times from file'},
 	2: {SHORT: 'One to Many (DB)', LONG: 'Create once, access many times from database'},
 }
 
-BOUND = 1000
+BOUND = 19000
 GROUP = BOUND/10
 
-BATCH    = 30
+BATCH    = 100
 REPEAT   = 5
 NUMBER   = 5
 
 
 def perfs():
 	data = {}
-	for test_id in range(len(ALL_TESTS)):
+	for test_id in ALL_TESTS.keys():
 		print(f'{ALL_TESTS[test_id][LONG]:^50}')
 
 		tested_func = wrapper(run_batch, BOUND, GROUP, test_id, BATCH)
@@ -83,7 +83,7 @@ def create_once_and_access_many(bound, group, index): # files
 	if(index == 0):
 		# create
 		primes = pg.get_prime_numbers(bound)
-		file_name = pg.save(primes, 'file', name=file_name)
+		file_name = pg.save(primes, 'file', name=NAME)
 
 	primes = pg.load(file_name)
 	ps.sort_primes(primes, group)
@@ -98,11 +98,14 @@ def create_once_and_access_many_db(bound, group, index): # db
 		primes = pg.get_prime_numbers(bound)
 		pg.populate_db(prime_db, primes)
 
-	# rows = pg.load_db(prime_db)
+	primes = pg.load_db(prime_db)
 	prime_db.close()
+	
 	ps.sort_primes(primes, group)
 
 
+
+# ----------------------- Stats ---------------------------
 
 def digest(raw_stats):
 	stats = {}
@@ -116,15 +119,30 @@ def digest(raw_stats):
 	
 
 def compare_stats(data):
-	percent_b = data[1][BEST]/data[0][BEST]
-	percent_w = data[1][WORST]/data[0][WORST]
-	percent_a = data[1][AVERAGE]/data[0][AVERAGE]
+	stats = []
+	col = [NAME, BEST, AVERAGE, WORST]
+	indexes = list(ALL_TESTS.keys())
+	for i, stat in enumerate(data):
+		idx = indexes[i]
+		name = ALL_TESTS[idx][SHORT]
+		best = data[idx][BEST]
+		avg = data[idx][AVERAGE]
+		worst = data[idx][WORST]
 
-	print(f"Best : function '{ALL_TESTS[1][SHORT]}' is {percent_b:.1%} faster than '{ALL_TESTS[0][SHORT]}'.")
-	print(f"Average : function '{ALL_TESTS[1][SHORT]}' is {percent_a:.1%} faster than '{ALL_TESTS[0][SHORT]}'.")
-	print(f"Worst : function '{ALL_TESTS[1][SHORT]}' is {percent_w:.1%} faster than '{ALL_TESTS[0][SHORT]}'.")
+		stats += [[name, best, avg, worst]]
 
-# perfs()
+	dp.print_table(col, stats, "All Performance Tests")
 
-for i in range(1,10):
-	create_once_and_access_many_db(BOUND, GROUP, i)
+
+
+# ----------------------- Test ---------------------------
+
+def test_db():
+	for i in range(10):
+		create_once_and_access_many_db(BOUND, GROUP, i)
+
+
+
+# ----------------------- Main ---------------------------
+
+perfs()

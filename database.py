@@ -21,7 +21,6 @@ def create_table(con):
 		con.execute(sql_create_primes_table)
 
 	rows = get_all_primes(con)
-	print_table(rows)
 
 
 def insert_rows(con, rows):
@@ -32,10 +31,9 @@ def insert_rows(con, rows):
 		try:
 			con.executemany(sql_insert_primes, rows)
 		except sqlite3.IntegrityError:
-        	return 'Line already exists.' 
+			return 'Line already exists.' 
 
 	rows = get_all_primes(con)
-	print_table(rows)
 
 
 def get_all_primes(con):

@@ -92,7 +92,6 @@ def populate_db(db_connection, list):
 
 def load_db(db_connection):
 	rows = db.get_all_primes(db_connection)
-	db.print_table(rows)
 
 	primes = []
 	for row in rows:
@@ -126,4 +125,4 @@ def test_write_and_read_db():
 
 
 # test_write_and_read_file()
-test_write_and_read_db()
+# test_write_and_read_db()
