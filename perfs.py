@@ -22,15 +22,29 @@ ALL_TESTS = {
 	2: {SHORT: 'One to Many (DB)', LONG: 'Create once, access many times from database'},
 }
 
-BOUND = 19000
+BOUND = 20
 GROUP = BOUND/10
 
 BATCH    = 100
 REPEAT   = 5
 NUMBER   = 5
 
+REPEAT_C   = 1
+NUMBER_C   = 1
 
-def perfs():
+
+
+# ----------------------- Timer ---------------------------
+
+def creating_perfs():
+	tested_func = wrapper(create_primes, BOUND)
+	raw_stats = timeit.repeat(tested_func, repeat=REPEAT_C, number=NUMBER_C)
+
+	data = digest(raw_stats)
+	print(f'\n{data}\n')
+
+
+def storing_perfs():
 	data = {}
 	for test_id in ALL_TESTS.keys():
 		print(f'{ALL_TESTS[test_id][LONG]:^50}')
@@ -54,6 +68,17 @@ def wrapper(func, *args, **kwargs):
         return func(*args, **kwargs)
     return wrapped
 
+
+
+# ----------------------- Create ---------------------------
+
+def create_primes(bound):
+	print('.', end = '', flush=True)
+	p = pg.get_prime_numbers(bound)
+	print(f'{p}')
+
+
+# ----------------------- Store ---------------------------
 
 def run_batch(bound, group, test_id, batch):
 	for i in range(batch):
@@ -143,4 +168,5 @@ def test_db():
 
 # ----------------------- Main ---------------------------
 
-perfs()
+# storing_perfs()
+creating_perfs()
