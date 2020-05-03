@@ -1,9 +1,10 @@
 from pathlib import Path
 
+import database as db
 
 
-# ------------- Generatoe ---------------
 
+# ------------- Generator ---------------
 
 def get_prime_numbers(upper_bound):
 	prime_list = []
@@ -19,7 +20,6 @@ def get_prime_numbers(upper_bound):
 
 
 # ------------- File ---------------
-
 
 CSV = 'csv'
 FILE = 'file'
@@ -77,14 +77,52 @@ def write_in_csv(list, file_name):
 
 # ----------------------- Database ---------------------------
 
+def access_db(db_name):
+	return db.get_connection(db_name)
+
+
+def populate_db(db_connection, list):
+	db.create_table(db_connection)
+
+	# convert list elements to tuple
+	rows = [(elm,) for elm in list]
+
+	db.insert_rows(db_connection, rows)
+
+
+def load_db(db_connection):
+	rows = db.get_all_primes(db_connection)
+
+	primes = []
+	for row in rows:
+		primes += [row['primes']]
+
+	return primes
+
 
 
 # ----------------------- Test ---------------------------
-
 
 def test_write_and_read_file():
 	name = write_in_file([i for i in range(3)], 'test')
 	print(load(name))
 	print(name)
 
+
+def test_write_and_read_db():
+	db_name = 'database/test.db'
+	prime_db = access_db(db_name)
+	
+	# create
+	primes = [i for i in range(5)]
+	populate_db(prime_db, primes)
+	prime_db.close()
+
+	# access
+	prime_db = access_db(db_name)
+	rows = load_db(prime_db)
+	prime_db.close()
+
+
 # test_write_and_read_file()
+# test_write_and_read_db()
