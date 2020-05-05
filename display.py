@@ -17,7 +17,7 @@ def plot_consol(group_label, groups_len, group):
 	total = 0
 	for label, group_len in zip(group_label, groups_len):
 		total += group_len
-		rows += [label, group_len, total]
+		rows += [[label, group_len, total]]
 
 	print_table(columns_names, rows, title)
 
@@ -71,7 +71,6 @@ def plot_2_curves(abscisse, c1_values, t1, c2_values, t2):
 	# col, lines
 	plt.figure(figsize=(10, 6), num="Perf tests for prime generator")
 	
-
 	plt.subplot(1, 2, 1)
 	plt.plot(abscisse, c1_values[0], 'r.', abscisse, c1_values[1], '.')
 	plt.title(f"Number of {t1} itterations for each search")
