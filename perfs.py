@@ -16,13 +16,26 @@ AVERAGE = 'average'
 SHORT = 'short'
 LONG = 'long'
 
-ALL_TESTS = {
+ALL_STORING_TESTS = {
 	0: {SHORT: 'One to Many (file)', LONG: 'Create once, access many times from file'},
 	1: {SHORT: 'One to Many (DB)', LONG: 'Create once, access many times from database'},
 	# 2: {SHORT: 'Many to Many', LONG: 'Create and access many time'},
 }
 
-BOUND = 2000
+VERSION_1 = 'v1'
+VERSION_2 = 'v2'
+
+ALL_CREATING_TESTS = [
+	VERSION_1,
+	VERSION_2
+]
+
+POTENTIAL_ITER = 'Potential'
+EFFECTIVE_ITER = 'Reality'
+
+
+
+BOUND = 5000
 GROUP = BOUND/10
 
 BATCH    = 100
@@ -39,29 +52,24 @@ GLOBAL_STATS = {}
 # ----------------------- Timer ---------------------------
 
 def creating_perfs():
-	tests = [
-		'v1',
-		'v2'
-	]
-
 	data = {}
-	for i in range(len(tests)):
-		tested_func = wrapper(create_primes, BOUND, tests[i])
+	for i in range(len(ALL_CREATING_TESTS)):
+		tested_func = wrapper(create_primes, BOUND, ALL_CREATING_TESTS[i])
 		raw_stats = timeit.repeat(tested_func, repeat=REPEAT_C, number=NUMBER_C)
 
 		data[i] = digest(raw_stats)
 		print(f'\n{data[i]}\n')
 
 	# compare best and worse times
-	compare_stats(data, tests)
+	compare_stats(data, ALL_CREATING_TESTS)
 	# curve
-	# print(GLOBAL_STATS)
+	plot_stats(GLOBAL_STATS)
 
 
 def storing_perfs():
 	data = {}
-	for test_id in ALL_TESTS.keys():
-		print(f'{ALL_TESTS[test_id][LONG]:^50}')
+	for test_id in ALL_STORING_TESTS.keys():
+		print(f'{ALL_STORING_TESTS[test_id][LONG]:^50}')
 
 		tested_func = wrapper(run_batch, BOUND, GROUP, test_id, BATCH)
 
@@ -71,7 +79,7 @@ def storing_perfs():
 		print(f'\n{data[test_id]}\n')
 
 	# compare best and worse times
-	tests_name = [test[SHORT] for _, test in ALL_TESTS.items()]
+	tests_name = [test[SHORT] for _, test in ALL_STORING_TESTS.items()]
 	compare_stats(data, tests_name)
 	
 
@@ -79,9 +87,9 @@ def storing_perfs():
 Needed to time a Python function with arguments
 '''
 def wrapper(func, *args, **kwargs):
-    def wrapped():
-        return func(*args, **kwargs)
-    return wrapped
+	def wrapped():
+		return func(*args, **kwargs)
+	return wrapped
 
 
 
@@ -170,10 +178,27 @@ def compare_stats(data, tests_name):
 		stats += [[name, best, avg, worst]]
 
 	dp.print_table(col, stats, "All Performance Tests")
+	faster(VERSION_1, data[0][AVERAGE], VERSION_2, data[1][AVERAGE])
+
+
+def faster(old_name, old, new_name, new):
+	percent = old/new
+	print(f"Average : function '{new_name}' is {percent:.1%} faster than '{old_name}'.")
 
 
 def plot_stats(data):
-	pass
+	c1_v1 = data[VERSION_1][POTENTIAL_ITER]
+	c1_v2 = data[VERSION_2][POTENTIAL_ITER]
+	c1_values = [c1_v1, c1_v2]
+
+	c2_v1 = data[VERSION_1][EFFECTIVE_ITER]
+	c2_v2 = data[VERSION_2][EFFECTIVE_ITER]
+	c2_values = [c2_v1, c2_v2]
+
+
+	abscisse = [x for x in range(len(c1_v1))]
+	dp.plot_2_curves(abscisse, c1_values, POTENTIAL_ITER, c2_values, EFFECTIVE_ITER)
+	
 
 # ----------------------- Test ---------------------------
 

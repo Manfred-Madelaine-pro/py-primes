@@ -55,9 +55,7 @@ def plot_digit_curve(labels, values):
 
 
 def plot_3digit_curve(labels, values):
-	plt.figure(figsize=(9, 3))
-
-	plt.title("Count prime numbers by digits")
+	plt.figure(figsize=(9, 3), num="Count prime numbers by digits")
 	plt.ylabel("Count")
 	plt.xlabel("Digit")
 
@@ -65,4 +63,24 @@ def plot_3digit_curve(labels, values):
 		plt.subplot(131 + i)
 		plt.bar(labels[i], values[i])
 
+	plt.show()
+
+
+
+def plot_2_curves(abscisse, c1_values, t1, c2_values, t2):
+	# col, lines
+	plt.figure(figsize=(10, 6), num="Perf tests for prime generator")
+	
+
+	plt.subplot(1, 2, 1)
+	plt.plot(abscisse, c1_values[0], 'r.', abscisse, c1_values[1], '.')
+	plt.title(f"Number of {t1} itterations for each search")
+	plt.ylabel("Count")
+	plt.xlabel("value")
+
+	plt.subplot(1, 2, 2)
+	plt.plot(abscisse, c2_values[0], 'r.', abscisse, c2_values[1], '.')
+	plt.title(f"Number of {t2} itterations for each search")
+	plt.ylabel("Count")
+	plt.xlabel("value")
 	plt.show()
