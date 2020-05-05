@@ -11,9 +11,9 @@ GROUP = 100
 
 
 def main():
-	# regroup()
+	regroup()
 	# digits()
-	digits3()
+	# digits3()
 
 
 def regroup():

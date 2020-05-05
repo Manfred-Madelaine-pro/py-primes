@@ -17,9 +17,9 @@ SHORT = 'short'
 LONG = 'long'
 
 ALL_STORING_TESTS = {
-	0: {SHORT: 'One to Many (file)', LONG: 'Create once, access many times from file'},
-	1: {SHORT: 'One to Many (DB)', LONG: 'Create once, access many times from database'},
-	# 2: {SHORT: 'Many to Many', LONG: 'Create and access many time'},
+	0: {SHORT: 'Many to Many', LONG: 'Create and access many time'},
+	1: {SHORT: 'One to Many (file)', LONG: 'Create once, access many times from file'},
+	2: {SHORT: 'One to Many (DB)', LONG: 'Create once, access many times from database'},
 }
 
 VERSION_1 = 'v1'
@@ -35,7 +35,7 @@ EFFECTIVE_ITER = 'Reality'
 
 
 
-BOUND = 5000
+BOUND = 1000
 GROUP = BOUND/10
 
 BATCH    = 100
@@ -131,7 +131,6 @@ def create_once_and_access_many(bound, group, index): # files
 	
 	if(index == 0):
 		primes = pg.get_prime_numbers(bound)
-		print(primes)
 		file_name = pg.save(primes, 'file', name=NAME)
 
 	primes = pg.load(file_name)
@@ -210,5 +209,5 @@ def test_db():
 
 # ----------------------- Main ---------------------------
 
-# storing_perfs()
 creating_perfs()
+# storing_perfs()
