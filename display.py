@@ -1,3 +1,4 @@
+from matplotlib.legend_handler import HandlerLine2D
 from matplotlib import pyplot as plt
 from prettytable import PrettyTable
 
@@ -72,14 +73,16 @@ def plot_2_curves(abscisse, c1_values, t1, c2_values, t2):
 	plt.figure(figsize=(10, 6), num="Perf tests for prime generator")
 	
 	plt.subplot(1, 2, 1)
-	plt.plot(abscisse, c1_values[0], 'r.', abscisse, c1_values[1], '.')
-	plt.title(f"Number of {t1} itterations for each search")
+	line1, = plt.plot(abscisse, c1_values[0], 'r.',label='version 1')
+	line2, = plt.plot(abscisse, c1_values[1], '.', label='version 2')
+	plt.legend(handler_map={line1: HandlerLine2D(numpoints=4)})
+	plt.title(f"Number of {t1} iterations for each search")
 	plt.ylabel("Count")
-	plt.xlabel("value")
 
 	plt.subplot(1, 2, 2)
-	plt.plot(abscisse, c2_values[0], 'r.', abscisse, c2_values[1], '.')
-	plt.title(f"Number of {t2} itterations for each search")
+	line1, = plt.plot(abscisse, c2_values[0], 'r.',label='version 1')
+	line2, = plt.plot(abscisse, c2_values[1], '.', label='version 2')
+	plt.title(f"Number of Effective iterations for each search")
+	plt.legend(handler_map={line1: HandlerLine2D(numpoints=4)})
 	plt.ylabel("Count")
-	plt.xlabel("value")
 	plt.show()

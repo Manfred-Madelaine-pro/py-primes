@@ -1,6 +1,6 @@
 # :abacus: Prime Numbers
 
-## :memo: Installation
+## :clipboard: Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install **matplotlib** and **prettytable**.
 
@@ -43,7 +43,7 @@ All primes grouped by 10:
 +-------+-------+-------+
 ```
 
-### :chart: Curve plot 
+### :chart_with_upwards_trend: Curve plot 
 ![curve](img/primes_smaller_than_100.PNG)
 
 
@@ -56,13 +56,14 @@ GROUP = 10
 ```
 
 with `BORNE_SUP = 10000` :
+
 ![curve](img/primes_smaller_than_10_000.PNG)
 
 
+---
 
 
-
-# Playing with performances
+# :zap: Playing with performances
 
 
 ## :rocket: Quick start 
@@ -72,13 +73,12 @@ Run this command:
 python perfs.py
 ```
 
-## Searching primes 
+## :stopwatch: Searching primes 
 Testing 2 research algoriths : 
 
 1. **Version 1**: Looping through all previous **natural numbers** in order to find a potential divider
 1. **Version 2**: Looping through all previous **prime numbers** in order to find a potential divider and then through remaining natural numbers.
 
---- 
 
 ```as
 All Performance Tests for primes smaller than 5000:
@@ -92,17 +92,17 @@ Average : function 'v2' is 430.4% faster than 'v1'.
 ```
 
 Performances for primes smaller than 500 :
+
 ![curve](img/searching_primes_smaller_than_500.PNG)
 
 
-## Storing primes
-Testing 3 ways to store the primes:
+## :floppy_disk: Storing primes
+Testing 3 ways to access and store the primes:
 
 1. Not storing them and calculating them for each iterations
-1. Storing them in a file
-1. Storing them in a database (SQLite3)
+1. Storing them in a file after the first iteration and then accessing them
+1. Storing them in a database (SQLite3) after the first iteration and then accessing them
 
----
 
 ```as
 All Performance Tests for primes smaller than 5000:
