@@ -19,7 +19,7 @@ Run this command:
 python main.py
 ```
 
-## :dart: Result
+## :dart: Results
 
 ### :desktop_computer: Consol output
 ```as
