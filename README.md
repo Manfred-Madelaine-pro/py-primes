@@ -44,10 +44,12 @@ All primes grouped by 10:
 ```
 
 ### :chart_with_upwards_trend: Curve plot 
+
 ![curve](img/primes_smaller_than_100.PNG)
 
 
 ## :gear: Settings
+
 If you want to personalize the output, just change those global variables:
 
 ```python
