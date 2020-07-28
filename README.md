@@ -74,6 +74,7 @@ python perfs.py
 ```
 
 ## :stopwatch: Searching primes 
+
 Testing 2 research algoriths : 
 
 1. **Version 1**: Looping through all previous **natural numbers** in order to find a potential divider
